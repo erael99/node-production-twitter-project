@@ -1,20 +1,20 @@
+const app = require('../app');
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
-const app = require('../app');
+const { clientPromise } = require('../database/index');
 
 app.use(
-    session({
-        secret: 'twitter',
-        resave: false,
-        saveUninitialized: false,
-        cookie: {
-            httpOnly: true,
-            maxAge: 1000 * 60 * 60 * 24 * 14, // vadited time session
-        },
-        store: MongoStore.create({
-            mongoUrl: 'mongodb+srv://zen:az@cluster0.8vrua.mongodb.net/twitter',
-            ttl: 60 * 60 * 24 * 14
-        }),
-
-    })
+  session({
+    secret: 'je suis un secret',
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      httpOnly: false,
+      maxAge: 1000 * 60 * 60 * 24 * 14,
+    },
+    store: MongoStore.create({
+      clientPromise: clientPromise.then((m) => m.connection.getClient()),
+      ttl: 60 * 60 * 24 * 14,
+    }),
+  })
 );

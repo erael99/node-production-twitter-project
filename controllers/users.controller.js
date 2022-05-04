@@ -1,6 +1,6 @@
-const { createUser } = require('../models/users.model');
-const multer = require('multer');
+const { createUser } = require('../queries/users.queries');
 const path = require('path');
+const multer = require('multer');
 const upload = multer({ storage: multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, path.join( __dirname, '../public/images/avatars'))
